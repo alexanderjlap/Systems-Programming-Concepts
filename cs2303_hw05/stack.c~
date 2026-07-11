@@ -1,0 +1,69 @@
+#include <stdlib.h>
+#include "stack.h"
+
+Stack *create_stack(int max_cells) {
+  Stack *new_stack; // The structure that contains a pointer to the recently allocated Stack.
+  new_stack = (Stack *) malloc(sizeof(Stack)); 
+
+  if (new_stack == NULL) return NULL; // Error--unable to allocate.
+
+  // Complete the struct.
+  new_stack->max_cells = max_cells;
+  new_stack->cells_used = 0; // Initially empty.
+
+  // Now set aside room for the entries in the stack.
+  new_stack->stack_base = (void **) calloc(sizeof(void *), max_cells);
+  if (new_stack->stack_base == NULL) {
+    free(new_stack); // Unable to allocate stack entries, so free struct.
+    return NULL;
+  }
+  new_stack->next = new_stack->stack_base; // No space on the stack to allocate entries, so free the struct.
+
+  return new_stack;
+}
+
+void delete_stack(Stack *which_stack) {
+  free(which_stack->stack_base); // Block of unoccupied memory with stack entries.
+  free(which_stack); // Free the struct after that.
+}
+
+int push(Stack *which_stack, void *ptr) {
+  //  Make sure the stack isn't already full.
+  if ((which_stack->cells_used) >=  (which_stack->max_cells)) { //added equals - spkordell
+    // Cells used by which stack = cells max by which stack.
+    return -1;  // Overflowing stack
+  }
+
+  // On the stack, push.
+  *(which_stack->next) = ptr;  // Stack the pointer in memory.
+  (which_stack->next)++;       // Point to next free cell 
+  (which_stack->cells_used)++; 
+  return 0;  // Success
+}
+
+void* pop(Stack *which_stack) {
+  // Verify the stack is empty.
+  if ((which_stack->cells_used) <=  0) { // Extra equals.
+    which_stack->cells_used = 0;
+    return NULL;  // Stack empty
+  }
+
+  // Pop from stack.
+  (which_stack->next)--;         // Recall that this indicates the next free cell.
+  (which_stack->cells_used)--;
+  return (*(which_stack->next));
+}
+
+void* peek(Stack *which_stack) {
+  // Check if stack is empty
+  if ((which_stack->cells_used) <=  0) { // Additions equals.
+    which_stack->cells_used = 0;
+    return NULL;  // Blank stack
+  }
+
+  // Top of stack returned without popping.
+  // Recall that "next" refers to the next free cell.
+   void** top = (which_stack->next) - 1; // Identify the actual stack's top.
+
+  return (*top); // Access the page.
+}
