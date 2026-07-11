@@ -1,0 +1,6 @@
+#ifndef GPACALC_H
+#define GPACALC_H
+
+int averageGrade(int grades[], int numGrades);
+
+#endif

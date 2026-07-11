@@ -1,0 +1,45 @@
+/**
+ * @file grades.c
+ * @purpose This program determines the least and
+ * biggest grade, as well as the GPA of the entered
+ * grades, after reading in a number of student grades
+ * from the command line.
+ * @author Alexander Lap
+ * @version 1.0.0
+ * @date 2023-01-22
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "calcGrades.h"
+
+#define MAX_GRADES 20
+
+/**
+ * @purpose The purpose is to access the calcGrade file  * to read the numbers and do the calculations.
+ *
+ * @return 0 when no errors
+ */
+
+int main(int argc, const char* argv[]) {
+  if (argc < 2) { // Check that there was an entry
+        printf("Must enter one or more grades on the command line!\n");
+        return 1; // Indicate failure
+  } else if (argc - 1 > MAX_GRADES) {
+        printf("Too many grades entered! Shorten to %d grades.\n", MAX_GRADES);
+    }
+    
+    int grades[MAX_GRADES]; // Create the grades array, adding enough elements for all the inputs.
+    int numberOfGrades = (argc-1 > MAX_GRADES) ? MAX_GRADES : argc - 1; // Make the grades array with enough elements to accommodate each input.
+    printf("Grades entered: %d\n", numberOfGrades); 
+    
+    /* For each grade entered via the command line, the loop iterates once.
+     * Once each grade entered has been saved in the grades array, it ends.
+     */
+    int i; // Counter for loop iterations
+    for (i = 1; i <= numberOfGrades; i++;) {
+        grades[i-1] = atoi(argv[i]); // Grade is stored in array
+        printf("Grade: %d\n", grades[i-1]);
+    }
+    return calcGrades(grades, numberOfGrades); // Indicate success!
+}

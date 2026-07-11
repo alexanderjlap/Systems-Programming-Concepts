@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_GRADES 20
+
+int main(int argc, const char* argv[]) {
+  if (argc < 2) { // Check that there was an entry
+    printf("Must enter one or more grades on the command line!\n");
+    return 1; // Indicate failure
+  } else if (argc - 1 > MAX_GRADES) {
+    printf("Too many grades entered! Shortened to %d grades.\n", MAX_GRADES);
+  }
+
+  int grades[MAX_GRADES]; // Create the grades array, adding enough elements for all the inputs
+  int numberOfGrades = (argc - 1 > MAX_GRADES) ? MAX_GRADES : argc - 1; // Start a variable with the number of grades entered.
+  printf("Grades entered: %d\n", numberOfGrades);
+
+/* For each grade entered on the command line, the loop iterates once
+ * Once each grade entered has been added to the grades array, the process ends
+ */
+  int i; // Counter for loop iterations
+  for (i = 1; i <= numberOfGrades; i++) {
+    grades[i-1] = atoi(argv[i]); // Grade stored in array
+    printf("Grade: %d\n", grades[i-1]);
+  }
+  return averageGrade(grades, numberOfGrades); // Indicate success!
