@@ -1,0 +1,150 @@
+/** mystring.c
+ * @author Alexander Lap
+*/
+#include "mystring.h"
+
+/** Make a character string double.
+ * @param src String is duplicated.
+ * @return Pointer to an empty block of memory that has just been allocated, into which the original string has been duplicated. This block can  be freed with the free() method after it is no longer required. If memory cannot be allocated, it returns null.
+ */
+
+char* mystrdup(const char* src)
+{
+    int length; // The source string's length
+    char* newstr; // Pointer to a memory location holding a new string
+
+    length = mystrlen(src) + 1;  // Allow room for the terminator
+    newstr = (char*) malloc(length); // Must throw
+
+    // If no memory, return asap
+    if (newstr == 0) return (char *) 0;
+
+    // Alternatively, duplicate the string and return a pointer to a new string.
+    mystrcpy(newstr, src);
+    return newstr;
+}
+
+/**
+ * @purpose Discover the length of a string with a nul termination.
+ *
+ * @param s The size of the string.
+ *
+ * @return The length of the string
+ */
+size_t mystrlen(const char* s)
+{
+    const char* i;
+    for (i = s; ; ++s) if (*s == '\0') return s - i;
+}
+
+/**
+ * @purpose One string to another by copying.
+ *
+ * @param dst The string that will be used. The source will replace this with its own data.
+ * @param src The original string.
+ *
+ * @return The destination string (pointer).
+ */
+char* mystrcpy(char * dst, const char * src)
+{
+    char* orig_dst = dst;
+    const char* char_next;
+    char_next = src;
+    while (*char_next != '\0')
+    {
+        *dst = *char_next;
+        ++char_next;
+        ++dst;
+    }
+    *dst = *char_next;
+    return orig_dst;
+}
+
+/**
+ * @purpose Add the first n characters of the source string to the end of the destination string when you concatenate two strings. Additionally, the target string will have a null terminator added.
+ *
+ * @param destination Where the concatenation will end up.
+ * @param source To the end of the destination, put the source.
+ * @param num How many character should be added.
+ *
+ * @return A pointer in the right direction.
+ */
+char* mystrncat(char* destination, const char* source, size_t num)
+{
+    char* dst = destination;
+    while (*destination != '\0') ++destination;
+    int i;
+    for (i = 0; i < num; i++)
+    {
+        *destination = *source;
+        source++;
+        destination++;
+    }
+    *destination = '\0';
+    return dst;
+}
+
+/**
+ * @purpose Join two strings together. The characters from the source are appended to those at the destination, and a null-terminator is added at the end.
+ *
+ * @param destination The place when the concatenation will end.
+ * @param source The additional source for the intention.
+ *
+ * @return A pointer to the destination.
+ */
+char* mystrcat(char* destination, const char* source)
+{
+    char* dst = destination;
+    while (*destination != '\0') ++destination;
+    while (*source != '\0')
+    {
+        *destination = *source;
+        ++source;
+        ++destination;
+    }
+    *destination = '\0';
+    return dst;
+}
+
+/**
+ * @purpose Copies a string from one place to another while having a cap on the number of characters that can be copied. This prevents copying a string from going off the stack and overwriting data that is already in memory.
+ *
+ * @param destination The target string.
+ * @param source The origial string.
+ * @param num How many characters to copy.
+ *
+ * @return A pointer to the destination.
+ */
+char* mystrncpy(char* destination, const char* source, size_t num)
+{
+    char* dst = destination;
+    size_t i;
+    for (i = 0; i < num; i++)
+    {
+        *destination = *source;
+        if (*source != '\0')
+            ++source;
+        ++destination;
+    }
+    return dst;
+}
+
+/**
+ * @brief Carries out a deep copy operation on a string into a new memory block. Keep the original whole. Give a pointer to the new memory block that the copied string is stored in.
+ *
+ * @param s There is a duplicate string.
+ * @param n How many characers you should copy.
+ *
+ * @return A pointer to the deep copied string.
+ */
+char* mystrndup(const char *s, size_t n)
+{
+    char* newstr;
+    newstr = (char*) malloc(n + 1);
+
+    if (newstr == 0) return (char*)0;
+
+    mystrncpy(newstr, s, n);
+    if (newstr[(int)n] != '\0') newstr[(int)n] = '\0';
+    return newstr;
+}
